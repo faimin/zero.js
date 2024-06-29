@@ -1,6 +1,6 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { useWindowDimensions, StyleSheet } from 'react-native';
 
-export const WINDOW_HEIGHT = Dimensions.get('window').height;
+export const WINDOW_HEIGHT = useWindowDimensions().height;
 export const RATIO = 0.85;
 
 export const styles = StyleSheet.create({
