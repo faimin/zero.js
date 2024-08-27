@@ -3,12 +3,12 @@
 /**
  * Selects a content based on condition when inside a `<Switch>` control flow
  * ```typescript
- *   <Show when={state.count > 0} fallback={<div>Loading...</div>}>
- *   <div>My Content</div>
- *   </Show>
+ *   <ZShow when={state.count > 0} fallback={<div>Loading...</div>}>
+ *      <div>My Content</div>
+ *   </ZShow>
  * ```
  */
-export function Show<T>(props: {
+export function ZShow<T>(props: {
     when: T | undefined | null | false;
     fallback?: JSX.Element;
     children: JSX.Element;
@@ -19,33 +19,36 @@ export function Show<T>(props: {
 /**
  * Switches between content based on mutually exclusive conditions
  * ```typescript
- * <Switch fallback={<FourOhFour />}>
- *   <Match when={state.route === 'home'}>
+ * <ZSwitch fallback={<FourOhFour />}>
+ *   <ZMatch when={state.route === 'home'}>
  *     <Home />
- *   </Match>
- *   <Match when={state.route === 'settings'}>
+ *   </ZMatch>
+ *   <ZMatch when={state.route === 'settings'}>
  *     <Settings />
- *   </Match>
- * </Switch>
+ *   </ZMatch>
+ * </ZSwitch>
  * ```
  */
-export function Switch(props: {
+export function ZSwitch(props: {
     fallback?: JSX.Element;
     children: JSX.Element | JSX.Element[];
 }): JSX.Element | null {
-    let conds = props.children as unknown as MatchProps<unknown>[];
+    let conds = props.children;
+
     if (!Array.isArray(conds)) {
         conds = [conds];
     }
+
     for (let i = 0; i < conds.length; ++i) {
-        if (conds[i].when) {
-            return conds[i].children;
+        const matchProps = conds[i].props;
+        if (matchProps?.when) {
+            return matchProps.children;
         }
     }
     return props.fallback ?? null;
 }
 
-export type MatchProps<T> = {
+export type ZMatchProps<T> = {
     when: T | undefined | null | false;
     children: JSX.Element;
 };
@@ -53,11 +56,11 @@ export type MatchProps<T> = {
 /**
  * Selects a content based on condition when inside a `<Switch>` control flow
  * ```typescript
- * <Match when={condition()}>
+ * <ZMatch when={condition()}>
  *   <Content/>
- * </Match>
+ * </ZMatch>
  * ```
  */
-export function Match<T>(props: MatchProps<T>): JSX.Element | null {
+export function ZMatch<T>(props: ZMatchProps<T>): JSX.Element | null {
     return props.when ? props.children : null;
 }
