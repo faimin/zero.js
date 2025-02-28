@@ -1,4 +1,4 @@
-// ref solidjs: https://github.com/solidjs/solid/blob/19013bffa7c2494b9ce43d0f00172ee529996134/packages/solid/src/render/flow.ts
+// ref solid.js: https://github.com/solidjs/solid/blob/19013bffa7c2494b9ce43d0f00172ee529996134/packages/solid/src/render/flow.ts
 
 /**
  * Selects a content based on condition when inside a `<Switch>` control flow
@@ -9,11 +9,11 @@
  * ```
  */
 export function ZShow<T>(props: {
-    when: T | undefined | null | false;
-    fallback?: JSX.Element;
-    children: JSX.Element;
+	when: T | undefined | null | false;
+	fallback?: JSX.Element;
+	children: JSX.Element;
 }): JSX.Element | null {
-    return props.when ? props.children : props.fallback ?? null;
+	return props.when ? <>{props.children}</> : <>{props.fallback ?? null}</>;
 }
 
 /**
@@ -30,27 +30,27 @@ export function ZShow<T>(props: {
  * ```
  */
 export function ZSwitch(props: {
-    fallback?: JSX.Element;
-    children: JSX.Element | JSX.Element[];
+	fallback?: JSX.Element;
+	children: JSX.Element | JSX.Element[];
 }): JSX.Element | null {
-    let conds = props.children;
+	let conditions = props.children;
 
-    if (!Array.isArray(conds)) {
-        conds = [conds];
-    }
+	if (!Array.isArray(conditions)) {
+		conditions = [conditions];
+	}
 
-    for (let i = 0; i < conds.length; ++i) {
-        const matchProps = conds[i].props;
-        if (matchProps?.when) {
-            return matchProps.children;
-        }
-    }
-    return props.fallback ?? null;
+	for (let i = 0; i < conditions.length; ++i) {
+		const matchProps = conditions[i].props;
+		if (matchProps?.when) {
+			return <>{matchProps.children}</>;
+		}
+	}
+	return <>{props.fallback ?? null}</>;
 }
 
 export type ZMatchProps<T> = {
-    when: T | undefined | null | false;
-    children: JSX.Element;
+	when: T | undefined | null | false;
+	children: JSX.Element;
 };
 
 /**
@@ -62,5 +62,5 @@ export type ZMatchProps<T> = {
  * ```
  */
 export function ZMatch<T>(props: ZMatchProps<T>): JSX.Element | null {
-    return props.when ? props.children : null;
+	return props.when ? props.children : null;
 }
