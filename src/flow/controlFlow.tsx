@@ -10,9 +10,9 @@
  */
 export function ZShow<T>(props: {
 	when: T | undefined | null | false;
-	fallback?: JSX.Element;
-	children: JSX.Element;
-}): JSX.Element | null {
+	fallback?: React.ReactNode;
+	children: React.ReactNode;
+}): React.JSX.Element | null {
 	return props.when ? <>{props.children}</> : <>{props.fallback ?? null}</>;
 }
 
@@ -30,9 +30,9 @@ export function ZShow<T>(props: {
  * ```
  */
 export function ZSwitch(props: {
-	fallback?: JSX.Element;
-	children: JSX.Element | JSX.Element[];
-}): JSX.Element | null {
+	fallback?: React.JSX.Element;
+	children: React.JSX.Element | React.JSX.Element[];
+}): React.JSX.Element | null {
 	let conditions = props.children;
 
 	if (!Array.isArray(conditions)) {
@@ -50,7 +50,7 @@ export function ZSwitch(props: {
 
 export type ZMatchProps<T> = {
 	when: T | undefined | null | false;
-	children: JSX.Element;
+	children: React.ReactNode;
 };
 
 /**
@@ -61,6 +61,6 @@ export type ZMatchProps<T> = {
  * </ZMatch>
  * ```
  */
-export function ZMatch<T>(props: ZMatchProps<T>): JSX.Element | null {
-	return props.when ? props.children : null;
+export function ZMatch<T>(props: ZMatchProps<T>): React.ReactNode | null {
+	return props.when ? <>{props.children}</> : null;
 }
