@@ -11,13 +11,29 @@ import React from "react";
  */
 export const useInputNum = (
 	defaultVal = "",
+	min = Number.MIN_SAFE_INTEGER,
+	max = Number.MAX_SAFE_INTEGER,
 ): [string, (val: string) => void] => {
+	const maxLength = `${max}`.length;
+
 	const removeLeadingZeros = (s: string) => {
 		const oldLen = s.length;
 		let newStr = s.replace(/^0+/, ""); // 移除前导零
-		// 全为 0 的情况，留一个 0
-		if (newStr.length === 0 && oldLen > 0) {
+		if (oldLen > 0 && newStr.length === 0) {
 			newStr = "0";
+		}
+		if (oldLen > 0) {
+			// 超过范围的情况，取 min 或 max
+			if (newStr.length > maxLength) {
+				newStr = newStr.slice(0, maxLength);
+			} else {
+				newStr =
+					Number.parseInt(newStr) > max
+						? max.toString()
+						: Number.parseInt(newStr) < min
+							? min.toString()
+							: newStr;
+			}
 		}
 		return newStr;
 	};
